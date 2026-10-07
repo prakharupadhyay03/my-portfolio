@@ -1,12 +1,12 @@
-import { useState, useEffect, useRef } from 'react'
-import { Moon, Sun, Menu, X, ArrowUpRight, Download, ChevronDown } from 'lucide-react'
-import { PUMonogram } from './Icons'
+import { useState, useEffect } from 'react'
+import { Moon, Sun, Menu, X, ArrowUpRight } from 'lucide-react'
+
+const RESUME_URL =
+  'https://drive.google.com/file/d/1oTTXHzVmFqspBbUwaiqdL8rkTo7L3iNy/view?usp=sharing'
 
 function Navbar({ darkMode, toggleTheme }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [resumeDropdownOpen, setResumeDropdownOpen] = useState(false)
-  const resumeRef = useRef(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,23 +16,11 @@ function Navbar({ darkMode, toggleTheme }) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Close dropdown on click outside
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (resumeRef.current && !resumeRef.current.contains(e.target)) {
-        setResumeDropdownOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
-
-  // Close menus on Escape key
+  // Close mobile menu on Escape key
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         setMobileMenuOpen(false)
-        setResumeDropdownOpen(false)
       }
     }
     window.addEventListener('keydown', handleKeyDown)
@@ -64,19 +52,12 @@ function Navbar({ darkMode, toggleTheme }) {
         aria-label="Main Navigation"
       >
         <div className="flex h-20 items-center justify-between">
-          {/* Brand Group: [ PU ] on mobile, [ PU ] Prakhar Upadhyay on desktop */}
+          {/* Brand: Prakhar Upadhyay */}
           <a
             href="#home"
-            aria-label="Go to home"
-            className="group flex items-center gap-2.5 rounded-[6px] transition-opacity duration-200 hover:opacity-80 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#111111] dark:focus-visible:ring-[#F5F3ED]"
+            className="text-sm font-semibold tracking-tight text-[#111111] transition-opacity duration-200 hover:opacity-80 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#111111] dark:text-[#F5F3ED] dark:focus-visible:ring-[#F5F3ED] whitespace-nowrap"
           >
-            <div className="flex h-8 w-8 items-center justify-center text-[#111111] transition-transform duration-200 group-hover:scale-[1.02] dark:text-[#F5F3ED]">
-              <PUMonogram size={32} />
-            </div>
-
-            <span className="hidden sm:inline text-sm font-semibold tracking-tight text-[#111111] dark:text-[#F5F3ED] whitespace-nowrap">
-              Prakhar Upadhyay
-            </span>
+            Prakhar Upadhyay
           </a>
 
           {/* Desktop Navigation Links */}
@@ -92,7 +73,7 @@ function Navbar({ darkMode, toggleTheme }) {
             ))}
           </div>
 
-          {/* Right Side: Theme Toggle + Unified Resume Button + Mobile Toggle */}
+          {/* Right Side: Theme Toggle + Resume Button + Mobile Toggle */}
           <div className="flex items-center gap-3 sm:gap-4">
             {/* Theme Toggle Button */}
             <button
@@ -109,60 +90,16 @@ function Navbar({ darkMode, toggleTheme }) {
               )}
             </button>
 
-            {/* Desktop Unified Resume Button with Dropdown */}
-            <div className="relative hidden md:block" ref={resumeRef}>
-              <button
-                type="button"
-                onClick={() => setResumeDropdownOpen((prev) => !prev)}
-                aria-expanded={resumeDropdownOpen}
-                aria-haspopup="true"
-                aria-label="Resume options"
-                className="inline-flex items-center gap-1.5 rounded-[7px] border border-[#111111] px-3.5 py-1.5 text-xs font-medium tracking-tight text-[#111111] transition-all duration-200 hover:bg-[#111111] hover:text-[#F7F6F2] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#111111] dark:border-[#F5F3ED] dark:text-[#F5F3ED] dark:hover:bg-[#F5F3ED] dark:hover:text-[#11110F] dark:focus-visible:ring-[#F5F3ED]"
-              >
-                <span>Resume</span>
-                <ChevronDown
-                  size={13}
-                  strokeWidth={2}
-                  className={`transition-transform duration-200 ${
-                    resumeDropdownOpen ? 'rotate-180' : ''
-                  }`}
-                />
-              </button>
-
-              {/* Clean Editorial Dropdown with 6-8px rounded corners */}
-              {resumeDropdownOpen && (
-                <div
-                  role="menu"
-                  aria-orientation="vertical"
-                  className="absolute right-0 top-full mt-2 w-48 rounded-[7px] border border-[#D8D6CF] bg-[#F7F6F2] py-1 shadow-md transition-opacity dark:border-[#33322E] dark:bg-[#151412] z-50"
-                >
-                  <a
-                    role="menuitem"
-                    href="/Prakhar_Resume.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setResumeDropdownOpen(false)}
-                    className="mx-1 flex items-center justify-between rounded-[5px] px-3 py-1.5 text-xs font-medium text-[#111111] transition-colors hover:bg-[#EFECE6] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#111111] dark:text-[#F5F3ED] dark:hover:bg-[#201F1C] dark:focus-visible:ring-[#F5F3ED]"
-                  >
-                    <span>View Resume</span>
-                    <ArrowUpRight size={13} strokeWidth={1.8} className="text-[#66645F] dark:text-[#A5A39C]" />
-                  </a>
-
-                  <div className="my-0.5 border-t border-[#E8E6DF] dark:border-[#262522]" />
-
-                  <a
-                    role="menuitem"
-                    href="/Prakhar_Resume.pdf"
-                    download="Prakhar_Resume.pdf"
-                    onClick={() => setResumeDropdownOpen(false)}
-                    className="mx-1 flex items-center justify-between rounded-[5px] px-3 py-1.5 text-xs font-medium text-[#111111] transition-colors hover:bg-[#EFECE6] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#111111] dark:text-[#F5F3ED] dark:hover:bg-[#201F1C] dark:focus-visible:ring-[#F5F3ED]"
-                  >
-                    <span>Download Resume</span>
-                    <Download size={13} strokeWidth={1.8} className="text-[#66645F] dark:text-[#A5A39C]" />
-                  </a>
-                </div>
-              )}
-            </div>
+            {/* Desktop Resume Button */}
+            <a
+              href={RESUME_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:inline-flex items-center gap-1.5 rounded-[7px] border border-[#111111] px-3.5 py-1.5 text-xs font-medium tracking-tight text-[#111111] transition-colors duration-200 hover:bg-[#111111] hover:text-[#F7F6F2] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#111111] dark:border-[#F5F3ED] dark:text-[#F5F3ED] dark:hover:bg-[#F5F3ED] dark:hover:text-[#11110F] dark:focus-visible:ring-[#F5F3ED]"
+            >
+              <span>Resume</span>
+              <ArrowUpRight size={13} strokeWidth={1.8} />
+            </a>
 
             {/* Mobile Hamburger Button */}
             <button
@@ -192,26 +129,16 @@ function Navbar({ darkMode, toggleTheme }) {
                 </a>
               ))}
 
-              <div className="pt-3 border-t border-[#D8D6CF] dark:border-[#33322E] flex flex-col gap-2">
+              <div className="pt-3 border-t border-[#D8D6CF] dark:border-[#33322E]">
                 <a
-                  href="/Prakhar_Resume.pdf"
+                  href={RESUME_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={handleLinkClick}
-                  className="inline-flex items-center justify-between rounded-[7px] border border-[#D8D6CF] px-3.5 py-2 text-xs font-medium text-[#111111] dark:border-[#33322E] dark:text-[#F5F3ED]"
+                  className="inline-flex w-full items-center justify-between rounded-[7px] border border-[#111111] px-3.5 py-2 text-xs font-medium text-[#111111] transition-colors hover:bg-[#111111] hover:text-[#F7F6F2] dark:border-[#F5F3ED] dark:text-[#F5F3ED] dark:hover:bg-[#F5F3ED] dark:hover:text-[#11110F]"
                 >
-                  <span>View Resume</span>
-                  <ArrowUpRight size={14} />
-                </a>
-
-                <a
-                  href="/Prakhar_Resume.pdf"
-                  download="Prakhar_Resume.pdf"
-                  onClick={handleLinkClick}
-                  className="inline-flex items-center justify-between rounded-[7px] bg-[#111111] px-3.5 py-2 text-xs font-medium text-[#F7F6F2] dark:bg-[#F5F3ED] dark:text-[#11110F]"
-                >
-                  <span>Download Resume</span>
-                  <Download size={14} />
+                  <span>Resume</span>
+                  <ArrowUpRight size={14} strokeWidth={1.8} />
                 </a>
               </div>
             </div>
