@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Newsreader', Georgia, serif;
+}
+
+:root {
+  --bg-primary: #F7F6F2;
+  --text-primary: #111111;
+  --text-secondary: #55534E;
+  --text-muted: #88857E;
+  --border-subtle: #D8D6CF;
+  color-scheme: light;
+}
+
+.dark {
+  --bg-primary: #11110F;
+  --text-primary: #F5F3ED;
+  --text-secondary: #A5A39C;
+  --text-muted: #706E66;
+  --border-subtle: #33322E;
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 7rem;
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  overflow-x: hidden;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Ensure anchor scrolling clears the fixed navbar completely */
+section[id] {
+  scroll-margin-top: 7rem;
+}
+
+/* Accessible focus styling */
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Subtle image rendering */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
